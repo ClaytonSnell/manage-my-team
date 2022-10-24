@@ -8,7 +8,7 @@ CREATE TABLE department (
   department_name VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE role (
+CREATE TABLE roles (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     department_id INT,
     title VARCHAR(30) NOT NULL,
@@ -32,3 +32,4 @@ CREATE TABLE employee (
     ON DELETE SET NULL
 );
 
+--CREATE TABLE manager?

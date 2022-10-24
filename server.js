@@ -68,7 +68,7 @@ function viewDepartments() {
 
 function viewRoles() {
     db.query(
-        "SELECT * FROM role;",(err,res) => {
+        "SELECT * FROM roles;",(err,res) => {
             if (err) throw err
             console.table(res)
         init()
@@ -121,31 +121,31 @@ function addEmployee() {
     // for add department just promp and do .then
 }
 
-function addEmployee() {
-    db.query("SELECT * FROM role", (err,res) => {
+function addRole() {
+    db.query("SELECT * FROM department", (err,res) => {
         prompt([
             {
                 type: "input",
-                name: "firstName",
-                message: "What is the employees first name?"
+                name: "newTitle",
+                message: "What is the employees title?"
             },
             {
-                type: "input",
-                name: "lastName",
-                message: "What is the employees last name?"
+                type: "number",
+                name: "newSalary",
+                message: "What is the employees salary?"
             },
             {
                 type: "list",
-                name: "roleType",
-                message: "What is the employees role?",
-                choices: res.map(role => role.title)
+                name: "departmentType",
+                message: "What is the employees department?",
+                choices: res.map(department => department.title)
             },
         ]).then(data => {
-            const employeeTitle = res.find(role => role.title === data.roleType)
-            db.query("insert into employee set ?", {
-                first_name: data.firstName,
-                last_name: data.lastName,
-                role_id: employeeTitle.id
+            const newDepartment = res.find(department => department.title === data.departmentType)
+            db.query("insert into department set ?", {
+                title: data.newTitle,
+                salary: data.newSalary,
+                role_id: newDepartment.id
             })
          init()
         })
