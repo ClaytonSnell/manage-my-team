@@ -1,5 +1,5 @@
-SELECT movies.movie_name AS movie, reviews.review
-FROM reviews
-LEFT JOIN movies
-ON reviews.movie_id = movies.id
-ORDER BY movies.movie_name;
+SELECT roles.title.salary AS roles, employee, first_name.last_name
+FROM employee
+LEFT JOIN employee
+ON employee.role_id = roles.id
+ORDER BY roles.title.salary;

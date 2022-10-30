@@ -61,34 +61,34 @@ function viewDepartments() {
         "SELECT * FROM department;",(err,res) => {
             if (err) throw err
             console.table(res)
-        init()
+            init()
         }
-    )
-}
-
-function viewRoles() {
-    db.query(
-        "SELECT * FROM roles;",(err,res) => {
-            if (err) throw err
-            console.table(res)
-        init()
+        )
+    }
+    
+    function viewRoles() {
+        db.query(
+            "SELECT * FROM role;",(err,res) => {
+                if (err) throw err
+                console.table(res)
+                init()
+            }
+            )
         }
-    )
-}
-
-function viewEmployees() {
-    db.query(
-        "SELECT * FROM employee;",(err,res) => {
-            if (err) throw err
-            console.table(res)
-        init()
+        
+        function viewEmployees() {
+            db.query(
+                "SELECT * FROM employee;",(err,res) => {
+                    if (err) throw err
+                    console.table(res)
+                init()
+                }
+            )
         }
-    )
-}
-
-
-function addEmployee() {
-    db.query("SELECT * FROM role", (err,res) => {
+        
+        
+        function addEmployee() {
+            db.query("SELECT * FROM role", (err,res) => {
         prompt([
             {
                 type: "input",
@@ -138,14 +138,14 @@ function addRole() {
                 type: "list",
                 name: "departmentType",
                 message: "What is the employees department?",
-                choices: res.map(department => department.title)
+                choices: res.map(department => department.department_name)
             },
         ]).then(data => {
-            const newDepartment = res.find(department => department.title === data.departmentType)
-            db.query("insert into department set ?", {
+            const newRole = res.find(department => department.department_name === data.departmentType)
+            db.query("insert into role set ?", {
+                department_id: newRole.id,
                 title: data.newTitle,
                 salary: data.newSalary,
-                role_id: newDepartment.id
             })
          init()
         })
@@ -153,4 +153,8 @@ function addRole() {
     })
     // for role table query the department from table
     // for add department just promp and do .then
+}
+
+function addDepartment() {
+    
 }
