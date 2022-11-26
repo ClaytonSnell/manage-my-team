@@ -68,18 +68,18 @@ function viewDepartments() {
     
     function viewRoles() {
         db.query(
-            "SELECT * FROM role;",(err,res) => {
+            "SELECT title, salary, department_name AS department FROM role LEFT JOIN department ON role.department_id = department.id;",(err,res) => {
                 if (err) throw err
                 console.table(res)
                 init()
             }
             )
         }
-        
+        // Needs some work
         function viewEmployees() {
             db.query(
-                "SELECT * FROM employee;",(err,res) => {
-                    if (err) throw err
+                "SELECT first_name, last_name, role.title, department.department_name, role.salary FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id",(err,res) => {
+                   if (err) throw err 
                     console.table(res)
                 init()
                 }
@@ -106,12 +106,19 @@ function viewDepartments() {
                 message: "What is the employees role?",
                 choices: res.map(role => role.title)
             },
+            {
+                type: "list",
+                name: "manager_id",
+                message: "What is the manger_id?",
+                choices: [1,2,3]
+            },
         ]).then(data => {
             const employeeTitle = res.find(role => role.title === data.roleType)
             db.query("insert into employee set ?", {
                 first_name: data.firstName,
                 last_name: data.lastName,
-                role_id: employeeTitle.id
+                role_id: employeeTitle.id,
+                manager_id: data.manager_id,
             })
          init()
         })
@@ -156,5 +163,17 @@ function addRole() {
 }
 
 function addDepartment() {
+    prompt([
+        {
+            type: "input",
+            name: "newDepartment",
+            message: "What is the name of the new Department?"
+        },
+    ]).then(data => {
+        db.query("insert into department set ?", {
+            department_name: data.newDepartment,
+        })  
+     init()
+    })
+};
     
-}
